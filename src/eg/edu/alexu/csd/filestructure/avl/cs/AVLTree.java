@@ -62,15 +62,23 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
 		return rightChild;
 	}
 
-	private Node<T> DoubleRotationLeftRight(Node<T> node) {
+	private Node<T> doubleRotationLeftRight(Node<T> node) {
 		Node<T> left = rotateLeft((Node<T>) node.getLeftChild());
 		node.setLeftChild(left);
 		return rotateRight(node);
 	}
 
-	private Node<T> DoubleRotationRightLeft(Node<T> node) {
+	private Node<T> doubleRotationRightLeft(Node<T> node) {
 		Node<T> right = rotateRight((Node<T>) node.getRightChild());
 		node.setRightChild(right);
 		return rotateLeft(node);
+	}
+
+	/**
+	 * Getter for the size of the tree.
+	 * @return
+	 */
+	public int getSize() {
+		return size;
 	}
 }
