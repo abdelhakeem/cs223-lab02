@@ -2,14 +2,14 @@ package eg.edu.alexu.csd.filestructure.avl.cs;
 
 import eg.edu.alexu.csd.filestructure.avl.INode;
 
-public class Node<T extends Comparable<T>> implements INode<T>{
+public class Node<T extends Comparable<T>> implements INode<T> {
 
 	private Node<T> left;
 	private Node<T> right;
 	private T value;
 	private int height = -1;
 
-	public Node(T value){
+	public Node(T value) {
 		this.value = value;
 		this.height++;
 	}
@@ -19,7 +19,7 @@ public class Node<T extends Comparable<T>> implements INode<T>{
 		return left;
 	}
 
-	public void setLeftChild(INode<T> node){
+	public void setLeftChild(INode<T> node) {
 		this.left = (Node<T>) node;
 	}
 
@@ -42,12 +42,12 @@ public class Node<T extends Comparable<T>> implements INode<T>{
 		this.value = value;
 	}
 
-	public int getHeight(){
+	public int getHeight() {
 		return height;
 	}
-	
-	public void updateHeight(){
-		//called after insertions or rotation
+
+	public void updateHeight() {
+		// called after insertions or rotation
 		height = Math.max(left.height, right.height) + 1;
 	}
 }
