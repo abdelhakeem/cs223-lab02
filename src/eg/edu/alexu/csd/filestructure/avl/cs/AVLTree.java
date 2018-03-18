@@ -9,25 +9,33 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T>{
 	private int size = 0;
 	@Override
 	public void insert(T key) {
-		
+		//TODO Abdelhakeem
 	}
 
 	@Override
 	public boolean delete(T key) {
-		// TODO Auto-generated method stub
+		// TODO H
 		return false;
 	}
 
 	@Override
 	public boolean search(T key) {
-		// TODO Auto-generated method stub
+		Node<T> searcher = root;
+		while (searcher != null) {
+			if (searcher.getValue().compareTo(key) > 0) {
+				searcher = (Node<T>) searcher.getLeftChild();
+			} else if (searcher.getValue().compareTo(key) < 0) {
+				searcher = (Node<T>) searcher.getRightChild();
+			} else {
+				return true;
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public int height() {
-		// TODO Auto-generated method stub
-		return 0;
+		return root.getHeight();
 	}
 
 	@Override

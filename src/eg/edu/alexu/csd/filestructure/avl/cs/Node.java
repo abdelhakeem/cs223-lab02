@@ -42,10 +42,6 @@ public class Node<T extends Comparable<T>> implements INode<T>{
 		this.value = value;
 	}
 
-	public void setHeight(int height){
-		this.height = height;
-	}
-
 	public int getHeight(){
 		return height;
 	}
