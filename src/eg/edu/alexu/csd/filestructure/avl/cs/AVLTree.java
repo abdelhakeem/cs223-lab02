@@ -54,7 +54,7 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
 	}
 
 	private Node<T> rotateLeft(Node<T> node) {
-		Node<T> rightChild = (Node<T>) node.getLeftChild();
+		Node<T> rightChild = (Node<T>) node.getRightChild();
 		node.setRightChild(rightChild.getLeftChild());
 		rightChild.setLeftChild(node);
 		node.updateHeight();
