@@ -48,6 +48,16 @@ public class Node<T extends Comparable<T>> implements INode<T> {
 
     public void updateHeight() {
         // called after insertions or rotation
-        height = Math.max(left.height, right.height) + 1;
+        int leftHeight = -1, rightHeight = -1;
+
+        if (left != null) {
+            leftHeight = left.height;
+        }
+
+        if (right != null) {
+            rightHeight = right.height;
+        }
+
+        height = math.max(leftHeight, rightHeight) + 1;
     }
 }
