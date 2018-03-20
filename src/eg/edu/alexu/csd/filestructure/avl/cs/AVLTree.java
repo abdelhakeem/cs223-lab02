@@ -119,8 +119,52 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
 
     @Override
     public boolean delete(T key) {
-        // TODO H
-        return false;
+    	Node<T> searcher = root;
+    	Node<T> parent = null;
+        while (searcher != null) {
+            if (searcher.getValue().compareTo(key) > 0) {
+            	parent = searcher;
+                searcher = (Node<T>) searcher.getLeftChild();
+            } else if (searcher.getValue().compareTo(key) < 0) {
+            	parent = searcher;
+                searcher = (Node<T>) searcher.getRightChild();
+            } else {
+                break;
+            }
+        }
+    	if (searcher == null) {
+    		return false;
+    	} else {
+    		Node<T> replacer = null;
+    		Node<T> replacerParent = searcher;
+    		Node<T> replacerFinder = null;
+    		if (((Node<T>) searcher.getLeftChild()).getHeight()
+    				< ((Node<T>) searcher.getRightChild()).getHeight()) {
+    			replacer = (Node<T>) searcher.getRightChild();
+    			if (replacer != null) {
+    				replacerFinder = (Node<T>) replacer.getLeftChild();
+    			}
+    			while (replacerFinder != null) {
+    				replacerParent = replacer;
+    				replacer = replacerFinder;
+    				replacerFinder = (Node<T>) replacerFinder.getLeftChild();
+    			}
+    			replaceDeleted(searcher, parent, replacer, replacerParent);
+    		} else {
+    			replacer = (Node<T>) searcher.getLeftChild();
+    			if (replacer != null) {
+    				replacerFinder = (Node<T>) replacer.getRightChild();
+    			}
+    			while (replacerFinder != null) {
+    				replacerParent = replacer;
+    				replacer = replacerFinder;
+    				replacerFinder = (Node<T>) replacerFinder.getRightChild();
+    			}
+    			replaceDeleted(searcher, parent, replacer, replacerParent);
+    		}
+    		//TODO: Fix AVL property properly.
+    		return true;    		
+    	}
     }
 
     @Override
@@ -176,6 +220,15 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
         Node<T> right = rotateRight((Node<T>) node.getRightChild());
         node.setRightChild(right);
         return rotateLeft(node);
+    }
+
+    private void replaceDeleted(INode<T> deleted, Node<T> parent, Node<T> replacer, Node<T> replacerParent) {
+		deleted.setValue(replacer.getValue());
+		if (replacer == replacerParent.getLeftChild()) {
+			replacerParent.setLeftChild(null);
+		} else {
+			replacerParent.setRightChild(null);
+		}
     }
 
     /**

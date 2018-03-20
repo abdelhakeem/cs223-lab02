@@ -58,6 +58,6 @@ public class Node<T extends Comparable<T>> implements INode<T> {
             rightHeight = right.height;
         }
 
-        height = math.max(leftHeight, rightHeight) + 1;
+        height = Math.max(leftHeight, rightHeight) + 1;
     }
 }
