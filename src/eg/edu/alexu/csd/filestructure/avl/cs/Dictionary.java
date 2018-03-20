@@ -15,61 +15,61 @@ import eg.edu.alexu.csd.filestructure.avl.IDictionary;
  */
 public class Dictionary implements IDictionary {
 
-	private AVLTree<String> tree;
+    private AVLTree<String> tree;
 
-	public Dictionary() {
-		tree = new AVLTree<String>();
-	}
+    public Dictionary() {
+        tree = new AVLTree<String>();
+    }
 
-	@Override
-	public void load(File file) {
-		FileReader reader = null;
-		try {
-			reader = new FileReader(file);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		BufferedReader br = new BufferedReader(reader);
-		String inputWord;
-		try {
-			inputWord = br.readLine();
-			while (inputWord != null) {
-				insert(inputWord);
-				inputWord = br.readLine();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+    @Override
+    public void load(File file) {
+        FileReader reader = null;
+        try {
+            reader = new FileReader(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        BufferedReader br = new BufferedReader(reader);
+        String inputWord;
+        try {
+            inputWord = br.readLine();
+            while (inputWord != null) {
+                insert(inputWord);
+                inputWord = br.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	@Override
-	public boolean insert(String word) {
-		if (tree.search(word)) {
-			return false;
-		} else {
-			tree.insert(word);
-			return true;
-		}
-	}
+    @Override
+    public boolean insert(String word) {
+        if (tree.search(word)) {
+            return false;
+        } else {
+            tree.insert(word);
+            return true;
+        }
+    }
 
-	@Override
-	public boolean exists(String word) {
-		return tree.search(word);
-	}
+    @Override
+    public boolean exists(String word) {
+        return tree.search(word);
+    }
 
-	@Override
-	public boolean delete(String word) {
-		return tree.delete(word);
-	}
+    @Override
+    public boolean delete(String word) {
+        return tree.delete(word);
+    }
 
-	@Override
-	public int size() {
-		return tree.getSize();
-	}
+    @Override
+    public int size() {
+        return tree.getSize();
+    }
 
-	@Override
-	public int height() {
-		return tree.height();
-	}
+    @Override
+    public int height() {
+        return tree.height();
+    }
 
 }
