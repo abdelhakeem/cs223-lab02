@@ -291,7 +291,7 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
     				leftRightHeight = leftRightChild.getHeight();
     			}
     			if (leftLeftHeight > leftRightHeight) {
-    				topNode = rotateLeft(updated);
+    				topNode = rotateRight(updated);
     			} else {
     				topNode = doubleRotationLeftRight(updated);
     			}
@@ -307,10 +307,12 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
     				rightRightHeight = rightRightChild.getHeight();
     			}
     			if (rightLeftHeight < rightRightHeight) {
-    				topNode = rotateRight(updated);
+    				topNode = rotateLeft(updated);
     			} else {
     				topNode = doubleRotationRightLeft(updated);
     			}
+    		} else {
+    			continue;
     		}
     		if (topNode != null) {
     			if (topNode.getHeight() > root.getHeight()) {
