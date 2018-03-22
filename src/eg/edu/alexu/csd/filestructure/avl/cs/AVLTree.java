@@ -241,7 +241,8 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
     }
 
     private void replaceDeleted(INode<T> deleted, Node<T> parent, Node<T> replacer, Node<T> replacerParent) {
-		deleted.setValue(replacer.getValue());
+		if(replacer != null)
+			deleted.setValue(replacer.getValue());
 		if (replacer == replacerParent.getLeftChild()) {
 			replacerParent.setLeftChild(null);
 		} else {
