@@ -339,7 +339,7 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
     	}
     }
 
-    private void traverseTree(INode<T> toVisit) {
+    public void traverseTree(INode<T> toVisit) {
     	if (toVisit.getLeftChild() != null) {
     		traverseTree(toVisit.getLeftChild());
     	}

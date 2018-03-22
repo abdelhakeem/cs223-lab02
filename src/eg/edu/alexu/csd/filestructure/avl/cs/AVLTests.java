@@ -179,7 +179,7 @@ public class AVLTests {
 		}
 		sc.close();
 		System.out.println(dict.size());
-		//assertEquals(9123 - 290, dict.size()); // out of the 10,000 input words,
+		assertEquals(9123 - 290, dict.size()); // out of the 10,000 input words,
 												// there are only 9123 unique
 												// words
 		assertEquals(15, dict.height());
