@@ -138,6 +138,9 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
         }
     	if (searcher == null) {
     		return false;
+    	} else if (searcher == root) {
+    		root = null;
+    		return true;
     	} else {
     		Node<T> replacer = null;
     		Node<T> replacerParent = searcher;
