@@ -1,5 +1,7 @@
 package eg.edu.alexu.csd.filestructure.avl.cs;
 
+import java.util.Stack;
+
 import eg.edu.alexu.csd.filestructure.avl.IAVLTree;
 import eg.edu.alexu.csd.filestructure.avl.INode;
 
@@ -120,8 +122,10 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
     @Override
     public boolean delete(T key) {
     	Node<T> searcher = root;
+    	Stack<Node<T>> parentsStack = new Stack<Node<T>>();
     	Node<T> parent = null;
         while (searcher != null) {
+        	parentsStack.push(searcher);
             if (searcher.getValue().compareTo(key) > 0) {
             	parent = searcher;
                 searcher = (Node<T>) searcher.getLeftChild();
@@ -145,6 +149,7 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
     				replacerFinder = (Node<T>) replacer.getLeftChild();
     			}
     			while (replacerFinder != null) {
+    				parentsStack.push(replacerParent);
     				replacerParent = replacer;
     				replacer = replacerFinder;
     				replacerFinder = (Node<T>) replacerFinder.getLeftChild();
@@ -156,16 +161,18 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
     				replacerFinder = (Node<T>) replacer.getRightChild();
     			}
     			while (replacerFinder != null) {
+    				parentsStack.push(replacerParent);
     				replacerParent = replacer;
     				replacer = replacerFinder;
     				replacerFinder = (Node<T>) replacerFinder.getRightChild();
     			}
     			replaceDeleted(searcher, parent, replacer, replacerParent);
     		}
-    		//TODO: Fix AVL property properly.
+    		fixAVL(parentsStack);
     		return true;    		
     	}
     }
+
 
     @Override
     public boolean search(T key) {
@@ -229,6 +236,63 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
 		} else {
 			replacerParent.setRightChild(null);
 		}
+    }
+
+    /**
+     * Fixes the AVL tree after a deletion/insertion operation
+     * by backtracking through the trackStack updating heights
+     * and rotating when required to maintaing the AVL property.
+     * @param trackStack the stack that contains the route of
+     * the operation from top to bottom.
+     */
+    private void fixAVL(Stack<Node<T>> trackStack) {
+    	while (!trackStack.isEmpty()) {
+    		Node<T> updated = trackStack.pop();
+    		updated.updateHeight();
+    		Node<T> leftChild = (Node<T>) updated.getLeftChild();
+    		Node<T> rightChild = (Node<T>) updated.getRightChild();
+    		int leftHeight = -1;
+    		if (leftChild != null) {
+    			leftHeight = leftChild.getHeight();
+    		}
+    		int rightHeight = -1;
+    		if (rightChild != null) {
+    			rightHeight = rightChild.getHeight();
+    		}
+    		if (leftHeight - rightHeight > 1) {
+    			Node<T> leftLeftChild = (Node<T>) leftChild.getLeftChild();
+    			Node<T> leftRightChild = (Node<T>) leftChild.getRightChild();
+    			int leftLeftHeight = -1;
+    			if (leftChild != null) {
+    				leftLeftHeight = leftLeftChild.getHeight();
+    			}
+    			int leftRightHeight = -1;
+    			if (rightChild != null) {
+    				leftRightHeight = leftRightChild.getHeight();
+    			}
+    			if (leftLeftHeight > leftRightHeight) {
+    				rotateLeft(updated);
+    			} else {
+    				doubleRotationLeftRight(updated);
+    			}
+    		} else if (rightHeight - leftHeight > 1) {
+    			Node<T> rightLeftChild = (Node<T>) rightChild.getLeftChild();
+    			Node<T> rightRightChild = (Node<T>) rightChild.getRightChild();
+    			int rightLeftHeight = -1;
+    			if (leftChild != null) {
+    				rightLeftHeight = rightLeftChild.getHeight();
+    			}
+    			int rightRightHeight = -1;
+    			if (rightChild != null) {
+    				rightRightHeight = rightRightChild.getHeight();
+    			}
+    			if (rightLeftHeight < rightRightHeight) {
+    				rotateRight(updated);
+    			} else {
+    				doubleRotationRightLeft(updated);
+    			}
+    		}
+    	}
     }
 
     /**
