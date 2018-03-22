@@ -138,9 +138,6 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
         }
     	if (searcher == null) {
     		return false;
-    	} else if (searcher == root) {
-    		root = null;
-    		return true;
     	} else {
     		Node<T> replacer = null;
     		Node<T> replacerParent = searcher;
@@ -274,6 +271,7 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
     		if (rightChild != null) {
     			rightHeight = rightChild.getHeight();
     		}
+    		Node<T> topNode = null;
     		if (leftHeight - rightHeight > 1) {
     			Node<T> leftLeftChild = (Node<T>) leftChild.getLeftChild();
     			Node<T> leftRightChild = (Node<T>) leftChild.getRightChild();
@@ -286,9 +284,9 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
     				leftRightHeight = leftRightChild.getHeight();
     			}
     			if (leftLeftHeight > leftRightHeight) {
-    				rotateLeft(updated);
+    				topNode = rotateLeft(updated);
     			} else {
-    				doubleRotationLeftRight(updated);
+    				topNode = doubleRotationLeftRight(updated);
     			}
     		} else if (rightHeight - leftHeight > 1) {
     			Node<T> rightLeftChild = (Node<T>) rightChild.getLeftChild();
@@ -302,9 +300,14 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
     				rightRightHeight = rightRightChild.getHeight();
     			}
     			if (rightLeftHeight < rightRightHeight) {
-    				rotateRight(updated);
+    				topNode = rotateRight(updated);
     			} else {
-    				doubleRotationRightLeft(updated);
+    				topNode = doubleRotationRightLeft(updated);
+    			}
+    		}
+    		if (topNode != null) {
+    			if (topNode.getHeight() > root.getHeight()) {
+    				root = topNode;
     			}
     		}
     	}
