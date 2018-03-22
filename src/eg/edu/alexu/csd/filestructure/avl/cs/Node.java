@@ -4,11 +4,10 @@ import eg.edu.alexu.csd.filestructure.avl.INode;
 
 public class Node<T extends Comparable<T>> implements INode<T> {
 
+	private T value;
     private Node<T> left;
     private Node<T> right;
-    private T value;
     private int height = -1;
-
     public Node(T value) {
         this.value = value;
         this.height++;
