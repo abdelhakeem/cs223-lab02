@@ -121,6 +121,7 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
 
     @Override
     public boolean delete(T key) {
+    	traverseTree(root);
     	Node<T> searcher = root;
     	Stack<Node<T>> parentsStack = new Stack<Node<T>>();
     	Node<T> parent = null;
@@ -145,14 +146,18 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
     		int deletedLeftHeight = -1;
     		int deletedRightHeight = -1;
     		Node<T> deletedLeft = (Node<T>) searcher.getLeftChild();
-    		Node<T> deletedRight = (Node<T>) searcher.getLeftChild();
+    		Node<T> deletedRight = (Node<T>) searcher.getRightChild();
     		if (deletedLeft != null) {
     			deletedLeftHeight = deletedLeft.getHeight();
     		}
     		if (deletedRight != null) {
     			deletedRightHeight = deletedRight.getHeight();
     		}
-    		if (deletedLeftHeight > deletedRightHeight) {
+    		if (deletedLeftHeight == -1) {
+    			replacer = deletedRight;
+    		} else if (deletedRightHeight == -1) {
+    			replacer = deletedLeft;
+    		} else if (deletedLeftHeight > deletedRightHeight) {
     			replacer = deletedRight;
     			if (replacer != null) {
     				replacerFinder = (Node<T>) replacer.getLeftChild();
@@ -163,7 +168,6 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
     				replacer = replacerFinder;
     				replacerFinder = (Node<T>) replacerFinder.getLeftChild();
     			}
-    			replaceDeleted(searcher, parent, replacer, replacerParent);
     		} else {
     			replacer = deletedLeft;
     			if (replacer != null) {
@@ -175,8 +179,8 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
     				replacer = replacerFinder;
     				replacerFinder = (Node<T>) replacerFinder.getRightChild();
     			}
-    			replaceDeleted(searcher, parent, replacer, replacerParent);
     		}
+    		replaceDeleted(searcher, parent, replacer, replacerParent);
     		fixAVL(parentsStack);
     		return true;
     	}
@@ -216,6 +220,9 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
         leftChild.setRightChild(node);
         node.updateHeight();
         leftChild.updateHeight();
+        if (leftChild.getHeight() > root.getHeight()) {
+        	root = leftChild;
+        }
         return leftChild;
     }
 
@@ -225,6 +232,9 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
         rightChild.setLeftChild(node);
         node.updateHeight();
         rightChild.updateHeight();
+        if (rightChild.getHeight() > root.getHeight()) {
+        	root = rightChild;
+        }
         return rightChild;
     }
 
@@ -319,6 +329,16 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
     				root = topNode;
     			}
     		}
+    	}
+    }
+
+    private void traverseTree(INode<T> toVisit) {
+    	if (toVisit.getLeftChild() != null) {
+    		traverseTree(toVisit.getLeftChild());
+    	}
+    	System.out.println(toVisit.getValue());
+    	if (toVisit.getRightChild() != null) {
+    		traverseTree(toVisit.getRightChild());
     	}
     }
 
