@@ -46,8 +46,11 @@ public class Node<T extends Comparable<T>> implements INode<T> {
         return height;
     }
 
+    /**
+     * Called after insertions or rotation for
+     * updating the height.
+     */
     public void updateHeight() {
-        // called after insertions or rotation
         int leftHeight = -1, rightHeight = -1;
 
         if (left != null) {
