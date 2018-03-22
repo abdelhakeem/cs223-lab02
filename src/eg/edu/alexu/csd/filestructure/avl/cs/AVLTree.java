@@ -121,7 +121,6 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
 
     @Override
     public boolean delete(T key) {
-    	traverseTree(root);
     	Node<T> searcher = root;
     	Stack<Node<T>> parentsStack = new Stack<Node<T>>();
     	Node<T> parent = null;
@@ -252,10 +251,14 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
 
     private void replaceDeleted(INode<T> deleted, Node<T> parent, Node<T> replacer, Node<T> replacerParent) {
 		if(replacer == null) {
-			if (deleted == parent.getLeftChild()) {
-				parent.setLeftChild(null);
+			if (parent == null) {// Deleting one node in tree.
+				root = null;
 			} else {
-				parent.setRightChild(null);
+				if (deleted == parent.getLeftChild()) {
+					parent.setLeftChild(null);
+				} else {
+					parent.setRightChild(null);
+				}
 			}
 		} else {
 			deleted.setValue(replacer.getValue());
@@ -293,11 +296,11 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
     			Node<T> leftLeftChild = (Node<T>) leftChild.getLeftChild();
     			Node<T> leftRightChild = (Node<T>) leftChild.getRightChild();
     			int leftLeftHeight = -1;
-    			if (leftChild != null) {
+    			if (leftLeftChild != null) {
     				leftLeftHeight = leftLeftChild.getHeight();
     			}
     			int leftRightHeight = -1;
-    			if (rightChild != null) {
+    			if (leftRightChild != null) {
     				leftRightHeight = leftRightChild.getHeight();
     			}
     			if (leftLeftHeight > leftRightHeight) {
@@ -309,11 +312,11 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
     			Node<T> rightLeftChild = (Node<T>) rightChild.getLeftChild();
     			Node<T> rightRightChild = (Node<T>) rightChild.getRightChild();
     			int rightLeftHeight = -1;
-    			if (leftChild != null) {
+    			if (rightLeftChild != null) {
     				rightLeftHeight = rightLeftChild.getHeight();
     			}
     			int rightRightHeight = -1;
-    			if (rightChild != null) {
+    			if (rightRightChild != null) {
     				rightRightHeight = rightRightChild.getHeight();
     			}
     			if (rightLeftHeight < rightRightHeight) {
