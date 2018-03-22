@@ -142,9 +142,18 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
     		Node<T> replacer = null;
     		Node<T> replacerParent = searcher;
     		Node<T> replacerFinder = null;
-    		if (((Node<T>) searcher.getLeftChild()).getHeight()
-    				< ((Node<T>) searcher.getRightChild()).getHeight()) {
-    			replacer = (Node<T>) searcher.getRightChild();
+    		int deletedLeftHeight = -1;
+    		int deletedRightHeight = -1;
+    		Node<T> deletedLeft = (Node<T>) searcher.getLeftChild();
+    		Node<T> deletedRight = (Node<T>) searcher.getLeftChild();
+    		if (deletedLeft != null) {
+    			deletedLeftHeight = deletedLeft.getHeight();
+    		}
+    		if (deletedRight != null) {
+    			deletedRightHeight = deletedRight.getHeight();
+    		}
+    		if (deletedLeftHeight > deletedRightHeight) {
+    			replacer = deletedRight;
     			if (replacer != null) {
     				replacerFinder = (Node<T>) replacer.getLeftChild();
     			}
@@ -156,7 +165,7 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
     			}
     			replaceDeleted(searcher, parent, replacer, replacerParent);
     		} else {
-    			replacer = (Node<T>) searcher.getLeftChild();
+    			replacer = deletedLeft;
     			if (replacer != null) {
     				replacerFinder = (Node<T>) replacer.getRightChild();
     			}
@@ -169,10 +178,9 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
     			replaceDeleted(searcher, parent, replacer, replacerParent);
     		}
     		fixAVL(parentsStack);
-    		return true;    		
+    		return true;
     	}
     }
-
 
     @Override
     public boolean search(T key) {
@@ -244,7 +252,7 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
     /**
      * Fixes the AVL tree after a deletion/insertion operation
      * by backtracking through the trackStack updating heights
-     * and rotating when required to maintaing the AVL property.
+     * and rotating when required to maintainig the AVL property.
      * @param trackStack the stack that contains the route of
      * the operation from top to bottom.
      */
