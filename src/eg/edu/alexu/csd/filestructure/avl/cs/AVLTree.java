@@ -181,6 +181,7 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
     		}
     		replaceDeleted(searcher, parent, replacer, replacerParent);
     		fixAVL(parentsStack);
+    		size--;
     		return true;
     	}
     }
