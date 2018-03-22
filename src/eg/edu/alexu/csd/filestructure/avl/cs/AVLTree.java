@@ -220,9 +220,10 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
         leftChild.setRightChild(node);
         node.updateHeight();
         leftChild.updateHeight();
+        /*
         if (leftChild.getHeight() > root.getHeight()) {
         	root = leftChild;
-        }
+        }*/
         return leftChild;
     }
 
@@ -232,9 +233,11 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
         rightChild.setLeftChild(node);
         node.updateHeight();
         rightChild.updateHeight();
+        /*
         if (rightChild.getHeight() > root.getHeight()) {
         	root = rightChild;
         }
+        */
         return rightChild;
     }
 
@@ -274,7 +277,7 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
     /**
      * Fixes the AVL tree after a deletion/insertion operation
      * by backtracking through the trackStack updating heights
-     * and rotating when required to maintainig the AVL property.
+     * and rotating when required to maintinig the AVL property.
      * @param trackStack the stack that contains the route of
      * the operation from top to bottom.
      */
@@ -304,7 +307,7 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
     			if (leftRightChild != null) {
     				leftRightHeight = leftRightChild.getHeight();
     			}
-    			if (leftLeftHeight > leftRightHeight) {
+    			if (leftLeftHeight >= leftRightHeight) {
     				topNode = rotateRight(updated);
     			} else {
     				topNode = doubleRotationLeftRight(updated);
@@ -320,7 +323,7 @@ public class AVLTree<T extends Comparable<T>> implements IAVLTree<T> {
     			if (rightRightChild != null) {
     				rightRightHeight = rightRightChild.getHeight();
     			}
-    			if (rightLeftHeight < rightRightHeight) {
+    			if (rightRightHeight >= rightLeftHeight) {
     				topNode = rotateLeft(updated);
     			} else {
     				topNode = doubleRotationRightLeft(updated);

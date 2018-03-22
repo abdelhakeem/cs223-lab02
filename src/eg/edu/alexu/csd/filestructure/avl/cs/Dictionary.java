@@ -34,7 +34,7 @@ public class Dictionary implements IDictionary {
         try {
             inputWord = br.readLine();
             while (inputWord != null) {
-                insert(inputWord);
+                insert(inputWord.toLowerCase());
                 inputWord = br.readLine();
             }
         } catch (IOException e) {
@@ -44,22 +44,22 @@ public class Dictionary implements IDictionary {
 
     @Override
     public boolean insert(String word) {
-        if (tree.search(word)) {
+        if (tree.search(word.toLowerCase())) {
             return false;
         } else {
-            tree.insert(word);
+            tree.insert(word.toLowerCase());
             return true;
         }
     }
 
     @Override
     public boolean exists(String word) {
-        return tree.search(word);
+        return tree.search(word.toLowerCase());
     }
 
     @Override
     public boolean delete(String word) {
-        return tree.delete(word);
+        return tree.delete(word.toLowerCase());
     }
 
     @Override
